@@ -1,13 +1,15 @@
 package src.week3;
 
-import edu.princeton.cs.algs4.*;
-
+// import edu.princeton.cs.algs4.*;
+import java.io.*;
+import java.util.Scanner;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class ThreeSum {
-    public static List<List<Integer>> threeSum( List<Integer> arr, int k ) {
+    public static int threeSum(List<Integer> arr, int k) {
+        int count = 0;
         List<List<Integer>> ans = new ArrayList<>();
         Collections.sort(arr);
         for (int i = 0; i < arr.size() - 2; i++) {
@@ -15,29 +17,43 @@ public class ThreeSum {
             int need = k - arr.get(i);
             int l = 0, r = arr.size() - 1;
             while (l < r) {
+                if ( arr.get(l).equals(arr.get(l+1))) {
+                    l++;
+                    continue;
+                }
+                if (arr.get(r).equals(arr.get(r - 1))) {
+                    r--;
+                    continue;
+                }
                 if( arr.get(l) + arr.get(r) == need) {
-                    ArrayList<Integer> temp = new ArrayList<>();
-                    temp.add(i);
-                    temp.add(l);
-                    temp.add(r);
-                    ans.add(temp);
+                   System.out.println(arr.get(i) + " " + arr.get(l) + " " + arr.get(r));
+                   count++;
+                   l++;
+                   r--;
                 }
                 else if (arr.get(l) + arr.get(r) < need) {
                     l++;
                 }
                 else {
-                    r++;
+                    r--;
                 }
             }
         }
-        return ans;
+        return count;
     }
 
-    public static void main(String[] args)  {
-        ArrayList<Integer> arr = new ArrayList<>();
-        for(int i = 0; i < 5; i++) {
-            arr.add(StdIn.readInt());
+    public static void main(String[] args) {
+        List<Integer> arr = new ArrayList<>();
+        try {
+            File ip = new File("C:\\Users\\7420\\Desktop\\Code\\Java\\algs4-data\\32Kints.txt");
+            Scanner scan = new Scanner(ip);
+            while (scan.hasNext()) {
+                arr.add(scan.nextInt());
+            }
         }
-        StdOut.println(threeSum(arr, 0));
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Total " + threeSum(arr, 0) + " 3-Sum.");
     }
 }
