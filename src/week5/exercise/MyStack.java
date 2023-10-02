@@ -2,24 +2,24 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-public class MyStack {
-    int[] array;
+public class MyStack<Item> {
+    Item[] array;
     int size;
 
     public MyStack() {
-        array = new int[2];
+        array = (Item[]) new Object[2];
         size = 0;
     }
 
     private void resize(int size) {
-        int[] newArr = new int[size];
+        Item[] newArr = (Item[]) new Object[size];
         for (int i = 0; i < this.size; i++) {
             newArr[i] = array[i];
         }
         array = newArr;
     }
 
-    public int pop() throws Exception {
+    public Item pop() throws Exception {
         if (size > 0) {
             size--;
             if (size <= 0.25 * array.length) {
@@ -31,7 +31,7 @@ public class MyStack {
         throw new Exception("Stack is empty!");
     }
 
-    public void push(int x) {
+    public void push(Item x) {
         array[size++] = x;
         if (size == array.length) {
             resize(size * 2);
@@ -44,7 +44,7 @@ public class MyStack {
     }
 
     public static void main(String[] argv) throws Exception {
-        MyStack test = new MyStack();
+        MyStack<Integer> test = new MyStack<>();
         Scanner scan = null;
 
         try {
