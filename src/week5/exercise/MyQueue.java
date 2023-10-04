@@ -1,4 +1,7 @@
-public class MyQueue<Item> {
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+public class MyQueue<Item> implements Iterable<Item> {
     Item[] array;
     int size;
     int begin;
@@ -33,10 +36,14 @@ public class MyQueue<Item> {
         throw new Exception("Queue is empty");
     }
 
-    public void push(Item x) {
+    public void add(Item x) {
         array[rankToIndex(size)] = x;
         size++;
         if (size == array.length) resize(2 * array.length);
+    }
+
+    public Item top() {
+        return array[begin];
     }
 
     public boolean isEmpty() {
@@ -45,41 +52,63 @@ public class MyQueue<Item> {
 
     public void printAll() {
         System.out.print("[");
-        for (int i = 0; i < size; i++) {
-            System.out.print(rankToIndex(i) + " ");
+        for (Item x : this) {
+            System.out.print(x + " ");
         }
         System.out.println("] array length: " + array.length);
     }
 
+    private class QueueIterator implements Iterator<Item> {
+        private int currentRank = 0;
+
+        public boolean hasNext() {
+            return currentRank < size;
+        }
+
+        public Item next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            return array[rankToIndex(currentRank++)];
+        }
+    }
+
+    public Iterator<Item> iterator() {
+        return new QueueIterator();
+    }
+
     public static void main(String[] argv) throws Exception {
         MyQueue<String> test = new MyQueue<>();
-        test.push("One");
-        test.push("Two");
-        test.push("Three");
+        test.add("One");
+        test.add("Two");
+        test.add("Three");
+        test.printAll();
+        System.out.println("-push-");
+        test.add("Four");
         test.printAll();
         System.out.println("-pop-");
         test.pop();
         test.printAll();
         System.out.println("-push-");
-        test.push("Four");
+        test.add("One");
         test.printAll();
         System.out.println("-pop-");
         test.pop();
         test.printAll();
         System.out.println("-push-");
-        test.push("One");
+        test.add("Two");
         test.printAll();
         System.out.println("-pop-");
         test.pop();
         test.printAll();
         System.out.println("-push-");
-        test.push("Two");
+        test.add("Three");
         test.printAll();
         System.out.println("-pop-");
         test.pop();
         test.printAll();
-        System.out.println("-push-");
-        test.push("Three");
+        System.out.println("-pop-");
+        test.pop();
         test.printAll();
 
     }
