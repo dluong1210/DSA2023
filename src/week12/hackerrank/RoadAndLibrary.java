@@ -1,5 +1,5 @@
 public class RoadAndLibrary {
-        private static int parent(int i, int[] arr) {
+    private static int parent(int i, int[] arr) {
         while(arr[arr[i]] != i) {
             i = arr[i];
         }
